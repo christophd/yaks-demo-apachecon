@@ -1,0 +1,162 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Greeting Service API",
+    "version": "1.0.0",
+    "description": "A simple service pushing greetings events in different languages"
+  },
+  "servers": [
+    {
+      "url": "http://greeting-service-demo-apachecon.apps.cdeppisc.rhmw-integrations.net"
+    }
+  ],
+  "paths": {
+    "/openapi": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Open API specification"
+          }
+        },
+        "operationId": "openapi",
+        "summary": "Get the Open API V3 specification"
+      }
+    },
+    "/health": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Health indication"
+          }
+        },
+        "operationId": "health",
+        "summary": "Health status of the application"
+      }
+    },
+    "/": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "description": "List of languages"
+          }
+        },
+        "operationId": "list",
+        "summary": "List the available languages"
+      }
+    },
+    "/event/{language}": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "The greeting event has been created"
+          },
+          "404": {
+            "description": "The greeting language has not been found"
+          }
+        },
+        "operationId": "push-event",
+        "summary": "Publish a new greeting event in given language"
+      }
+    },
+    "/{language}": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            },
+            "description": "Greeting details"
+          }
+        },
+        "operationId": "greeting",
+        "summary": "Greeting details for given language"
+      },
+      "put": {
+        "requestBody": {
+          "content": {
+            "test/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "The greeting text content",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "The greeting has been created"
+          }
+        },
+        "operationId": "create",
+        "summary": "Save a new greeting"
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "The greeting has been deleted"
+          }
+        },
+        "operationId": "delete",
+        "summary": "Delete a greeting"
+      },
+      "parameters": [
+        {
+          "name": "language",
+          "description": "Language of the greeting",
+          "schema": {
+            "type": "string"
+          },
+          "in": "path",
+          "required": true
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "Greeting": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Greeting"
+        }
+      }
+    }
+  }
+}
