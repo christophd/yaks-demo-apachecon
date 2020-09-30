@@ -99,7 +99,7 @@ public class GreetingService extends RouteBuilder {
                     exchange.getIn().setBody(String.format("{\"message\": \"%s\"}", message));
                 })
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201))
-                .to("log:greeting?level=INFO");
+                .to("kafka:greetings?brokers=demo-kafka-cluster-kafka-bootstrap:9092");
     }
 
     private String getLanguage(Exchange exchange) {
